@@ -2,7 +2,6 @@ package com.james.bagels.activities;
 
 import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -18,9 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.james.bagels.Bagels;
+import com.james.bagels.BuildConfig;
 import com.james.bagels.R;
 import com.james.bagels.adapters.BagelAdapter;
 import com.james.bagels.data.Bagel;
+import com.james.bagels.dialogs.IntroDialog;
 import com.james.bagels.services.BagelService;
 import com.james.bagels.utils.BagelPageTransformer;
 import com.james.bagels.utils.ImageUtils;
@@ -33,6 +34,8 @@ import butterknife.ButterKnife;
 import butterknife.OnPageChange;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String KEY_FIRST_TIME = "com.james.bagels.FIRST_TIME";
 
     private static final int REQUEST_IMAGE = 4537;
     private static final int REQUEST_WALLPAPER = 7246;
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (prefs.getInt(KEY_FIRST_TIME, 0) != BuildConfig.VERSION_CODE)
+            new IntroDialog(this).show();
 
         Bagels bagels = (Bagels) getApplicationContext();
 

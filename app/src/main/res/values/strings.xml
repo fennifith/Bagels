@@ -1,5 +1,7 @@
 <resources>
+
     <string name="app_name">Bagels</string>
+    <string name="app_desc">Who wouldn\'t like blurry bagels?</string>
 
     <string name="action_set">Set Bagel</string>
     <string name="action_apply">Apply Wallpaper</string>
@@ -7,10 +9,18 @@
     <string name="action_rate">Play Store</string>
     <string name="action_github">Github</string>
     <string name="action_about">About</string>
+    <string name="action_start">Start</string>
 
     <string name="name_james">James Fenn</string>
     <string name="name_jared">Jared Gauthier</string>
 
     <string name="desc_james">Made the app. Likes bagels a lot.</string>
     <string name="desc_jared">Made the app\'s icon. Probably also likes bagels a lot, but I haven\'t asked him so I don\'t know.</string>
+
+    <string name="name_picker">Choose a Bagel</string>
+    <string name="desc_picker">Press the check mark to select a bagel to use.</string>
+
+    <string name="name_apply">Apply the Wallpaper</string>
+    <string name="desc_apply">Set Bagels as your home screen wallpaper to use it!</string>
+
 </resources>

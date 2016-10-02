@@ -31,7 +31,8 @@ public class BagelService extends WallpaperService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction().equals(ACTION_UPDATE))  bagelEngine.onCreate(bagelEngine.getSurfaceHolder());
+        if (intent != null && intent.getAction() != null && intent.getAction().equals(ACTION_UPDATE))
+            bagelEngine.onCreate(bagelEngine.getSurfaceHolder());
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -156,6 +157,8 @@ public class BagelService extends WallpaperService {
         }
 
         private void draw(SurfaceHolder holder, @Nullable Integer blurredAlpha) {
+            if (drawable == null) return;
+
             Canvas canvas;
             try {
                 canvas = holder.lockCanvas();
