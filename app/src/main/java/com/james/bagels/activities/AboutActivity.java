@@ -5,13 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.Toast;
 
 import com.james.bagels.R;
 import com.james.bagels.dialogs.LicenseDialog;
 
+import java.util.Random;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -20,11 +25,17 @@ public class AboutActivity extends AppCompatActivity {
     private static final String URL_STORE_PREFIX = "https://play.google.com/store/apps/details?id=";
     private static final String URL_GITHUB = "https://github.com/TheAndroidMaster/Bagels";
 
+    private String[] bagelStrings;
+    private Random random;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
+
+        bagelStrings = getResources().getStringArray(R.array.messages);
+        random = new Random();
     }
 
     @OnClick({R.id.james, R.id.jared, R.id.store, R.id.github, R.id.libraries})
@@ -45,5 +56,12 @@ public class AboutActivity extends AppCompatActivity {
             case R.id.libraries:
                 new LicenseDialog(this).show();
         }
+    }
+
+    @OnLongClick(R.id.icon)
+    public boolean onLongClick(View view) {
+        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        Toast.makeText(this, bagelStrings[random.nextInt(bagelStrings.length)], Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

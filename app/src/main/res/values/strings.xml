@@ -25,6 +25,38 @@
     <string name="name_apply">Apply the Wallpaper</string>
     <string name="desc_apply">Set Bagels as your home screen wallpaper to use it!</string>
 
+    <string-array name="messages">
+        <item>KMZ did it first.</item>
+        <item>I have a strange attraction to bagels.</item>
+        <item>The bagel approves of nobody.</item>
+        <item>I definitely didn\'t re-use this icon from an unpublished app.</item>
+        <item>The purple mini-FABs are attacking!</item>
+        <item>Gotten any java.lang.OutOfMemoryErrors yet?</item>
+        <item>Using this alongside Status is completely bugless and perfectly healthy for your phone.</item>
+        <item>Phil probably likes PHP.</item>
+        <item>Go eat a bagel, Akshath.</item>
+        <item>There should be a new update by now.</item>
+        <item>You should probably request a feature that already exists.</item>
+        <item>This message would really confuse some people if they saw this message.</item>
+        <item>I posted so many teasers about this. You missed all of them.</item>
+        <item>Did you hear about the guy whose whole left side was cut off? He\'s all right now.</item>
+        <item>I\'d tell you a chemistry joke but I know I wouldn\'t get a reaction.</item>
+        <item>Yesterday I accidentally swallowed some food coloring. The doctor says I\'m OK, but I feel like I died a little inside.</item>
+        <item>Have you ever tried to eat a clock? It\'s very time consuming.</item>
+        <item>I used to be a banker but I lost interest.</item>
+        <item>I once heard a joke about amnesia, but I forgot how it goes.</item>
+        <item>I used to have a fear of hurdles, but I got over it.</item>
+        <item>Don\'t trust people that do acupuncture, they\'re back stabbers.</item>
+        <item>I used to be addicted to soap, but I\'m clean now.</item>
+        <item>When a clock is hungry it goes back four seconds.</item>
+        <item>The magician got so mad he pulled his hare out.</item>
+        <item>I took a picture of a field of wheat, it was grainy.</item>
+        <item>My tailor is happy to make a pair of pants for me, or at least sew it seams.</item>
+        <item>I was struggling to figure out how lightning works then it struck me.</item>
+        <item>My grade in Marine Biology is below sea-level.</item>
+        <item>I don\'t think I need a spine. It\'s holding me back.</item>
+    </string-array>
+
     <string-array name="libraries">
         <item>
             <a href="https://github.com/bumptech/glide">Glide</a>

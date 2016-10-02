@@ -17,6 +17,7 @@
             android:layout_height="288dp">
 
             <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/icon"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:layout_gravity="center"
