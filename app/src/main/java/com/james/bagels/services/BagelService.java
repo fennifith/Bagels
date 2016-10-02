@@ -32,7 +32,7 @@ public class BagelService extends WallpaperService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.getAction() != null && intent.getAction().equals(ACTION_UPDATE))
-            bagelEngine.onCreate(bagelEngine.getSurfaceHolder());
+            bagelEngine.loadDrawables();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -53,12 +53,24 @@ public class BagelService extends WallpaperService {
         private Bagel bagel;
         private Drawable drawable, blurredDrawable;
 
+        private Integer width, height;
+
         private boolean isVisible;
 
         @Override
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
 
+            handler = new Handler();
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    setBlurred(true);
+                }
+            };
+        }
+
+        public void loadDrawables() {
             drawable = null;
             blurredDrawable = null;
 
@@ -66,7 +78,7 @@ public class BagelService extends WallpaperService {
             if (prefs.contains(WALLPAPER_KEY)) {
                 bagel = new Bagel(prefs.getString(WALLPAPER_KEY, null));
 
-                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<GlideDrawable>() {
+                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<GlideDrawable>(width, height) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         drawable = resource;
@@ -79,7 +91,8 @@ public class BagelService extends WallpaperService {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (bitmap != null) blurredDrawable = new BitmapDrawable(getResources(), bitmap);
+                                        if (bitmap != null)
+                                            blurredDrawable = new BitmapDrawable(getResources(), bitmap);
                                         handler.postDelayed(runnable, 5000);
                                     }
                                 });
@@ -88,14 +101,6 @@ public class BagelService extends WallpaperService {
                     }
                 });
             }
-
-            handler = new Handler();
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    setBlurred(true);
-                }
-            };
         }
 
         @Override
@@ -126,6 +131,10 @@ public class BagelService extends WallpaperService {
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            this.width = width;
+            this.height = height;
+            loadDrawables();
+
             super.onSurfaceChanged(holder, format, width, height);
         }
 
@@ -167,7 +176,10 @@ public class BagelService extends WallpaperService {
                 return;
             }
 
-            int difference = Math.max(canvas.getWidth() - drawable.getIntrinsicWidth(), canvas.getHeight() - drawable.getIntrinsicHeight());
+            if (width == null) width = canvas.getWidth();
+            if (height == null) height = canvas.getHeight();
+
+            int difference = Math.max(width - drawable.getIntrinsicWidth(), height - drawable.getIntrinsicHeight());
 
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth() + difference, drawable.getIntrinsicHeight() + difference);
             drawable.draw(canvas);
