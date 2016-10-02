@@ -70,12 +70,6 @@ public class BagelImageView extends AppCompatImageView {
                     }
                 }.start();
             }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                super.onLoadFailed(e, errorDrawable);
-                e.printStackTrace();
-            }
         });
     }
 
