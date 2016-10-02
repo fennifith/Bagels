@@ -22,7 +22,7 @@ public class IntroDialog extends AppCompatDialog {
     FloatingActionButton startFab;
 
     public IntroDialog(Context context) {
-        super(context, R.style.DialogTheme);
+        super(context, R.style.DialogTheme_Transparent);
     }
 
     @Override

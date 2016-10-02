@@ -10,6 +10,8 @@
     <string name="action_github">Github</string>
     <string name="action_about">About</string>
     <string name="action_start">Start</string>
+    <string name="action_libraries">Open Source Licenses</string>
+    <string name="action_dismiss">Dismiss</string>
 
     <string name="name_james">James Fenn</string>
     <string name="name_jared">Jared Gauthier</string>
@@ -22,5 +24,18 @@
 
     <string name="name_apply">Apply the Wallpaper</string>
     <string name="desc_apply">Set Bagels as your home screen wallpaper to use it!</string>
+
+    <string-array name="libraries">
+        <item>
+            <a href="https://github.com/bumptech/glide">Glide</a>
+            <i> - BSD, part MIT and Apache 2.0</i>
+            <p>\nGlide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.</p>
+        </item>
+        <item>
+            <a href="https://github.com/JakeWharton/butterknife">Butterknife</a>
+            <i> - Apache 2.0</i>
+            <p>\nField and method binding for Android views which uses annotation processing to generate boilerplate code for you.</p>
+        </item>
+    </string-array>
 
 </resources>

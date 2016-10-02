@@ -5,13 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.james.bagels.R;
+import com.james.bagels.dialogs.LicenseDialog;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,7 +27,7 @@ public class AboutActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.james, R.id.jared, R.id.store, R.id.github})
+    @OnClick({R.id.james, R.id.jared, R.id.store, R.id.github, R.id.libraries})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.james:
@@ -44,6 +42,8 @@ public class AboutActivity extends AppCompatActivity {
             case R.id.github:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URL_GITHUB)));
                 break;
+            case R.id.libraries:
+                new LicenseDialog(this).show();
         }
     }
 }
