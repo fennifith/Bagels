@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Bagels</string>
+
+    <string name="action_set">Set Bagel</string>
+    <string name="action_apply">Apply Wallpaper</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_rate">Play Store</string>
+    <string name="action_github">Github</string>
+    <string name="action_about">About</string>
+
+    <string name="name_james">James Fenn</string>
+    <string name="name_jared">Jared Gauthier</string>
+
+    <string name="desc_james">Made the app. Likes bagels a lot.</string>
+    <string name="desc_jared">Made the app\'s icon. Probably also likes bagels a lot, but I haven\'t asked him so I don\'t know.</string>
+</resources>
