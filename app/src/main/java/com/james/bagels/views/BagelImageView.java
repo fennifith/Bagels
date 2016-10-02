@@ -9,14 +9,22 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.james.bagels.data.Bagel;
 import com.james.bagels.utils.ImageUtils;
 
 public class BagelImageView extends AppCompatImageView {
 
     private boolean isBlurred;
+    private Bagel bagel;
     private Drawable drawable, blurredDrawable;
+
+    private Handler handler;
+    private Runnable runnable;
 
     public BagelImageView(Context context) {
         super(context);
@@ -30,20 +38,45 @@ public class BagelImageView extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
-        new Thread() {
+    public void setBagel(Bagel bagel) {
+        this.bagel = bagel;
+        handler = new Handler();
+        runnable = new Runnable() {
             @Override
             public void run() {
-                final Bitmap bitmap = ImageUtils.blurBitmap(getContext(), ImageUtils.drawableToBitmap(BagelImageView.this.drawable));
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                setBlurred(false);
+            }
+        };
+
+        Glide.with(getContext()).load(BagelImageView.this.bagel.location).centerCrop().into(new GlideDrawableImageViewTarget(this) {
+            @Override
+            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                super.onResourceReady(resource, animation);
+                drawable = resource;
+
+                new Thread() {
                     @Override
                     public void run() {
-                        if (bitmap != null) blurredDrawable = new BitmapDrawable(getResources(), bitmap);
+                        final Bitmap bitmap = ImageUtils.blurBitmap(getContext(), ImageUtils.drawableToBitmap(drawable));
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (bitmap != null) {
+                                    blurredDrawable = new BitmapDrawable(getResources(), bitmap);
+                                    handler.postDelayed(runnable, 5000);
+                                }
+                            }
+                        });
                     }
-                });
+                }.start();
             }
-        }.start();
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                e.printStackTrace();
+            }
+        });
     }
 
     public void setBlurred(boolean isBlurred) {

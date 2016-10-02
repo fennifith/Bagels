@@ -4,9 +4,11 @@ import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -203,7 +205,28 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString(Bagels.BAGELS_KEY + i, prefs.getString(Bagels.BAGELS_KEY + (i - 1), null));
                     }
 
-                    editor.putString(Bagels.BAGELS_KEY + 0, data.getDataString()).putInt(Bagels.BAGELS_SIZE_KEY, size + 1).apply();
+                    String path = data.getDataString();
+                    try {
+                        Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+                        String documentId;
+                        if (cursor != null) {
+                            cursor.moveToFirst();
+                            documentId = cursor.getString(0);
+                            documentId = documentId.substring(documentId.lastIndexOf(":") + 1);
+                            cursor.close();
+                        } else break;
+
+                        cursor = getContentResolver().query(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media._ID + " = ? ", new String[]{documentId}, null);
+                        if (cursor != null) {
+                            cursor.moveToFirst();
+                            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                            cursor.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    editor.putString(Bagels.BAGELS_KEY + 0, path).putInt(Bagels.BAGELS_SIZE_KEY, size + 1).apply();
 
                     ((Bagels) getApplicationContext()).getBagels(new Bagels.BagelsListener() {
                         @Override

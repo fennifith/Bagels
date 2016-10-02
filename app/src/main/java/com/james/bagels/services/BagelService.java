@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -51,7 +50,8 @@ public class BagelService extends WallpaperService {
         private boolean isBlurred;
 
         private Bagel bagel;
-        private Drawable drawable, blurredDrawable;
+        private Bitmap bitmap, blurredBitmap;
+        private Paint paint, blurredPaint;
 
         private Integer width, height;
 
@@ -68,31 +68,34 @@ public class BagelService extends WallpaperService {
                     setBlurred(true);
                 }
             };
+
+            paint = new Paint();
+            paint.setAntiAlias(true);
+            blurredPaint = new Paint();
+            blurredPaint.setAntiAlias(true);
         }
 
         public void loadDrawables() {
-            drawable = null;
-            blurredDrawable = null;
+            bitmap = null;
+            blurredBitmap = null;
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(BagelService.this);
             if (prefs.contains(WALLPAPER_KEY)) {
                 bagel = new Bagel(prefs.getString(WALLPAPER_KEY, null));
 
-                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<GlideDrawable>(width, height) {
+                Glide.with(BagelService.this).load(bagel.location).centerCrop().into(new SimpleTarget<GlideDrawable>(width, height) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        drawable = resource;
+                        bitmap = ImageUtils.drawableToBitmap(resource);
                         if (isVisible) draw(getSurfaceHolder(), null);
 
                         new Thread() {
                             @Override
                             public void run() {
-                                final Bitmap bitmap = ImageUtils.blurBitmap(BagelService.this, ImageUtils.drawableToBitmap(drawable));
+                                blurredBitmap = ImageUtils.blurBitmap(BagelService.this, bitmap);
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (bitmap != null)
-                                            blurredDrawable = new BitmapDrawable(getResources(), bitmap);
                                         handler.postDelayed(runnable, 5000);
                                     }
                                 });
@@ -114,7 +117,7 @@ public class BagelService extends WallpaperService {
             isVisible = true;
             super.onSurfaceCreated(holder);
 
-            if (drawable != null) draw(holder, null);
+            draw(holder, null);
         }
 
         @Override
@@ -126,7 +129,7 @@ public class BagelService extends WallpaperService {
         @Override
         public void onSurfaceRedrawNeeded(SurfaceHolder holder) {
             super.onSurfaceRedrawNeeded(holder);
-            if (drawable != null) draw(holder, null);
+            draw(holder, null);
         }
 
         @Override
@@ -166,7 +169,7 @@ public class BagelService extends WallpaperService {
         }
 
         private void draw(SurfaceHolder holder, @Nullable Integer blurredAlpha) {
-            if (drawable == null) return;
+            if (bitmap == null) return;
 
             Canvas canvas;
             try {
@@ -176,18 +179,11 @@ public class BagelService extends WallpaperService {
                 return;
             }
 
-            if (width == null) width = canvas.getWidth();
-            if (height == null) height = canvas.getHeight();
+            canvas.drawBitmap(bitmap, 0, 0, paint);
 
-            int difference = Math.max(width - drawable.getIntrinsicWidth(), height - drawable.getIntrinsicHeight());
-
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth() + difference, drawable.getIntrinsicHeight() + difference);
-            drawable.draw(canvas);
-
-            if (blurredAlpha != null && blurredDrawable != null) {
-                blurredDrawable.setAlpha(blurredAlpha);
-                blurredDrawable.setBounds(0, 0, drawable.getIntrinsicWidth() + difference, drawable.getIntrinsicHeight() + difference);
-                blurredDrawable.draw(canvas);
+            if (blurredAlpha != null && blurredAlpha > 0 && blurredBitmap != null) {
+                blurredPaint.setAlpha(blurredAlpha);
+                canvas.drawBitmap(blurredBitmap, 0, 0, blurredPaint);
             }
 
             holder.unlockCanvasAndPost(canvas);

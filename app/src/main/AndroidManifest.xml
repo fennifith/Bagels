@@ -2,6 +2,7 @@
     package="com.james.bagels">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.software.live_wallpaper" android:required="true" />
 

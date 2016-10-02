@@ -4,16 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.james.bagels.R;
 import com.james.bagels.data.Bagel;
 import com.james.bagels.views.BagelImageView;
@@ -38,16 +33,7 @@ public class BagelFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         Bagel bagel = getArguments().getParcelable(EXTRA_BAGEL);
-        if (bagel != null) {
-            Glide.with(getContext()).load(bagel.location).into(new ImageViewTarget<GlideDrawable>(imageView) {
-                @Override
-                protected void setResource(GlideDrawable resource) {
-                    imageView.setDrawable(resource);
-                    imageView.setImageDrawable(resource);
-                }
-            });
-        }
-
+        imageView.setBagel(bagel);
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
