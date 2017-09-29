@@ -1,5 +1,9 @@
 Bagels is a live wallpaper that blurs the screen after a period of time without any actions. It was designed to create a good user experience while using minimal resources and taking up the least amount of space possible. Also, I really like bagels.
 
+|Bagels|More Bagels|
+|--------|--------|
+|![img](https://theandroidmaster.github.io/apps/bagels/images/bagels1.png)|![img](https://theandroidmaster.github.io/apps/bagels/images/bagels2.png)|
+
 ## License
 
 ```
