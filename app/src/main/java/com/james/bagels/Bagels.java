@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Bagels extends Application {
 
-    private static final String BAGELS_URL = "https://theandroidmaster.github.io/images/bagels/bagels.json";
+    private static final String BAGELS_URL = "https://jfenn.me/images/bagels/bagels.json";
 
     public static final String BAGELS_SIZE_KEY = "com.james.bagels.BAGELS_SIZE_KEY";
     public static final String BAGELS_KEY = "com.james.bagels.BAGELS_KEY";
