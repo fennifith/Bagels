@@ -1,7 +1,6 @@
 package com.james.bagels.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,9 +22,6 @@ public class BagelFragment extends Fragment {
     @BindView(R.id.imageView)
     BagelImageView imageView;
 
-    private Handler handler;
-    private Runnable runnable;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,25 +35,13 @@ public class BagelFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        handler.removeCallbacks(runnable);
                         imageView.setBlurred(false);
-                        handler.postDelayed(runnable, 5000);
                         break;
                 }
 
                 return false;
             }
         });
-
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (imageView != null) imageView.setBlurred(true);
-            }
-        };
-
-        handler.postDelayed(runnable, 5000);
 
         return v;
     }

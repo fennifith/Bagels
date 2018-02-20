@@ -6,18 +6,19 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.service.wallpaper.WallpaperService;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.james.bagels.data.Bagel;
 import com.james.bagels.utils.ImageUtils;
 
@@ -83,9 +84,9 @@ public class BagelService extends WallpaperService {
             if (prefs.contains(WALLPAPER_KEY)) {
                 bagel = new Bagel(prefs.getString(WALLPAPER_KEY, null));
 
-                Glide.with(BagelService.this).load(bagel.location).centerCrop().into(new SimpleTarget<GlideDrawable>(width, height) {
+                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<Drawable>(width, height) {
                     @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         bitmap = ImageUtils.drawableToBitmap(resource);
                         if (isVisible) draw(getSurfaceHolder(), null);
 
