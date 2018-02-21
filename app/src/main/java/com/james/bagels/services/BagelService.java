@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -84,7 +85,7 @@ public class BagelService extends WallpaperService {
             if (prefs.contains(WALLPAPER_KEY)) {
                 bagel = new Bagel(prefs.getString(WALLPAPER_KEY, null));
 
-                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<Drawable>(width, height) {
+                Glide.with(BagelService.this).load(bagel.location).into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         bitmap = ImageUtils.drawableToBitmap(resource);
@@ -180,11 +181,22 @@ public class BagelService extends WallpaperService {
                 return;
             }
 
-            canvas.drawBitmap(bitmap, 0, 0, paint);
+            float scale = (float) canvas.getWidth() / bitmap.getWidth();
+            float xOffset = 0, yOffset = 0;
+            if (bitmap.getHeight() * scale < canvas.getHeight()) {
+                scale = (float) canvas.getHeight() / bitmap.getHeight();
+                xOffset = (canvas.getWidth() / 2) - (bitmap.getWidth() * scale / 2);
+            } else yOffset = (canvas.getHeight() / 2) - (bitmap.getHeight() * scale / 2);
+
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            matrix.postTranslate(xOffset, yOffset);
+
+            canvas.drawBitmap(bitmap, matrix, paint);
 
             if (blurredAlpha != null && blurredAlpha > 0 && blurredBitmap != null) {
                 blurredPaint.setAlpha(blurredAlpha);
-                canvas.drawBitmap(blurredBitmap, 0, 0, blurredPaint);
+                canvas.drawBitmap(blurredBitmap, matrix, blurredPaint);
             }
 
             holder.unlockCanvasAndPost(canvas);
