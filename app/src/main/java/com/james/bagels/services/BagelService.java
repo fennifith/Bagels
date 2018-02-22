@@ -55,8 +55,6 @@ public class BagelService extends WallpaperService {
         private Bitmap bitmap, blurredBitmap;
         private Paint paint, blurredPaint;
 
-        private Integer width, height;
-
         private boolean isVisible;
 
         @Override
@@ -136,10 +134,7 @@ public class BagelService extends WallpaperService {
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            this.width = width;
-            this.height = height;
             loadDrawables();
-
             super.onSurfaceChanged(holder, format, width, height);
         }
 
