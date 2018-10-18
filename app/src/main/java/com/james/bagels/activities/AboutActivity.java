@@ -20,10 +20,10 @@ import butterknife.OnLongClick;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private static final String URL_JAMES = "https://theandroidmaster.github.io/";
+    private static final String URL_JAMES = "https://jfenn.me/";
     private static final String URL_JARED = "https://plus.google.com/108101726709784843314";
     private static final String URL_STORE_PREFIX = "https://play.google.com/store/apps/details?id=";
-    private static final String URL_GITHUB = "https://github.com/TheAndroidMaster/Bagels";
+    private static final String URL_GITHUB = "https://jfenn.me/redirects/?t=github&d=Bagels";
 
     private String[] bagelStrings;
     private Random random;
